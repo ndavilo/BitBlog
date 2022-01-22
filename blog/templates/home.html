@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	COIN BLOG POSTS
+{% endblock %}
+
+{% block content %}
+
+<hr>
+<h1>COIN BLOG POST</h1>
+<hr>
+
+<ul>
+{% for post in object_list %}
+	<li>
+
+	<a href="{% url 'category' post.category|slugify %}">{{ post.category }} </a>
+	- <a href="{% url 'article_detail' post.pk %}"> {{ post.title }} </a>- {{ post.author.first_name }} - {{ post.date_time }} 
+
+		{% if user.is_authenticated %}
+			{% if user.id == post.author.id %}
+
+				- <small><a href="{% url 'update' post.pk %}"> (Edit) </a></small>
+				- <small><a href="{% url 'delete' post.pk %}"> (Delete) </a></small><br/>
+
+			{% endif %}
+		{% endif %}
+	{{ post.body|slice:":200" }}</li>
+
+{% endfor %}
+</ul>
+
+
+{% endblock %}

@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+	 {{ post.title }}
+{% endblock %}
+
+{% block content %}
+
+	<br/>
+	<br/>
+	<h2><strong> {{ post.category }} - {{ post.title }} </strong><br/></h2>
+	<small> By: {{ post.author.first_name }} {{ post.author.last_name }}</small><br/>
+	<hr>
+	<br/>
+	{{ post.body }}
+
+	<br/><br/><hr>
+	<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+	
+	{% if user.is_authenticated %}
+		{% if user.id == post.author.id %}
+
+			<small><a href="{% url 'update' post.pk %}" class="btn btn-secondary"> Edit </a></small> 
+			<small><a href="{% url 'delete' post.pk %}" class="btn btn-secondary"> Delete </a></small>
+
+		{% endif %}
+
+	{% else %}
+
+		<a href="{% url 'register' %}" class="btn btn-secondary">Register</a>
+
+	{% endif %}
+
+{% endblock %}
