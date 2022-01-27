@@ -17,7 +17,7 @@
 
     </title>
   </head>
-  <body>
+  <body style="background-color:powderblue;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}">CoinBlog!</a>
@@ -26,16 +26,53 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>
-            {% if user.is_authenticated %}
+              {% if user.is_authenticated %}
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'add_post' %}">Add Post</a>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'add_post' %}">Add Post</a>
+                </li>
+
+            {% endif %}
+            {% if cat_menu %}
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Search
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+
+                  {% for item in cat_menu %}
+                    
+                    <a class="dropdown-item" href="{% url 'category' item|slugify %}">{{ item }}</a>
+
+                  {% endfor %}
+
+                </div>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">logout</a>
+
+            {% endif %}
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ user.first_name }} {{ user.last_name}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% if user.profile.id %}
+                    <li><a class="dropdown-item" href="{% url 'show_profile_page' user.profile.id %}">View Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'edit_profile_page' user.profile.id %}">Update Profile</a></li>
+                  {% else %}
+                    <li><a class="dropdown-item" href="{% url 'create_profile_page' %}">Create Profile</a></li>
+                  {% endif %}
+                  <li><a class="dropdown-item" href="{% url 'edit_settings' %}">Update Setting</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
               </li>
 
             {% else %}
@@ -44,38 +81,15 @@
                 <a class="nav-link" href="{% url 'register' %}">Register</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">login</a>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
               </li>
 
 
             {% endif %}
-            {% if cat_menu %}
-
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                SELECTIONS
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-
-                {% for item in cat_menu %}
-                  
-                  <a class="dropdown-item" href="{% url 'category' item|slugify %}">{{ item }}</a>
-
-                {% endfor %}
-
-              </div>
-            </li>
-
-            {% endif %}
-                 
-           
-            
           </ul>
         </div>
       </div>
     </nav>
-
 
     <div class="container">
     {% block content %}

@@ -1,27 +1,26 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Update
+	Edit Profile Page
 {% endblock %}
 
 {% block content %}
 
 	{% if user.is_authenticated %}
-		{% if user.id == post.author.id %}
+		{% if user.id == profile.user.id %}
 
 			<hr>
-			<h1>Edit Post</h1>
+			<h1>Edit Profile Page</h1>
 			<hr>
 			<div class="form-group">
-				<form method="POST">
+				<form method="POST" enctype="multipart/form-data">
 					{% csrf_token %}
-					{{ form.media }}
-					{{ form.as_p}}
+					{{ form.as_p }}
 					<button class="btn btn-secondary">Update</button>
 				</form>
 			</div>
-
-			{% endif %}
+			
+		{% endif %}
 	{% endif %}
 
 {% endblock %}

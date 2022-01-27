@@ -12,9 +12,10 @@
 		<h1>Add Post</h1>
 		<hr>
 		<div class="form-group">
-			<form method="POST">
+			<form method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
-				{{ form.as_p}}
+				{{ form.media }}
+				{{ form.as_p }}
 				<button class="btn btn-secondary">Post</button>
 			</form>
 		</div>

@@ -1,6 +1,6 @@
 
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
 	 {{ post.title }}
 {% endblock %}
@@ -9,15 +9,78 @@
 
 	<br/>
 	<br/>
-	<h2><strong> {{ post.category }} - {{ post.title }} </strong><br/></h2>
-	<small> By: {{ post.author.first_name }} {{ post.author.last_name }}</small><br/>
+		<div class="card text-dark bg-info mb-3">
+	  <div class="row g-0">
+	    <div class="col-md-4">
+	      {% if post.author.profile.profile_pic %} 
+	      	<img src="{{ post.author.profile.profile_pic.url}}" width="150" height="150"> 
+	      {% else %}
+	      	<img src="{% static 'blog/image/user-profile-default-image.png' %}" width="150" height="150"> 
+	      {% endif %}
+	    </div>
+	    <div class="col-md-8">
+	      <div class="card-body">
+	      	{% if post.author.profile%} 
+	      	<a href="{% url 'show_profile_page' post.author.profile.id %}" class="btn btn-secondary">View Profile Page</a>
+	      	{% endif %}
+	        <h5 class="card-title"><small> {{ post.author.first_name }} {{ post.author.last_name }}</small><br/></h5>
+	        {% if post.author.profile.Phone %} 
+	        	<p class="card-text"><small class="text-muted"> {{ post.author.profile.Phone }} </small></p>
+	        {% endif %}
+	        <h2><strong> {{ post.category }} - {{ post.title }} </strong><br/></h2>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	<hr>
 	<br/>
-	{{ post.body }}
-
-	<br/><br/><hr>
-	<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 	
+	{{ post.body|safe }}
+
+	{% if post.attached_image %} <img src="{{ post.attached_image.url}}" width="600" height="600"> {% endif %}
+
+	<br/><hr>
+	<form action="{% url 'like_post' post.pk %}" method="POST">
+		{% csrf_token %}
+		{% if user.is_authenticated %}
+			{% if liked %}
+				<button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-danger btn-sm">UnLike</button> - 
+
+			{% else %}
+
+				<button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">Like</button> - 
+
+			{% endif %}
+		{% else %}
+			<a href="{% url 'login' %}" class="btn btn-danger">login! to like</a>
+
+		{% endif %}
+
+		{{ total_likes }} Likes
+
+	</form>
+
+	<br/><hr>
+
+		{% if not post.comments.all %}
+			<h2> No Comments . . . </h2><a href="{% url 'add_comment' post.pk %}"> Add Comment </a>
+
+		{% else %}
+			<h2> Comments . . . </h2> <a href="{% url 'add_comment' post.pk %}"> Add Comment </a><br/>
+			{% for comment in post.comments.all %}
+				<br/>
+				<strong>
+					{{ comment.name }}
+					{{ comment.date_added }}
+				</strong>
+				<br/>
+				{{ comment.body }}
+				<br/>
+
+			{% endfor %}
+
+		{% endif %}
+
 	{% if user.is_authenticated %}
 		{% if user.id == post.author.id %}
 
@@ -31,5 +94,9 @@
 		<a href="{% url 'register' %}" class="btn btn-secondary">Register</a>
 
 	{% endif %}
+
+	<hr>
+	<br/>
+
 
 {% endblock %}
