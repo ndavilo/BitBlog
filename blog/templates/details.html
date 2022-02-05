@@ -6,40 +6,15 @@
 {% endblock %}
 
 {% block content %}
-
-	<br/>
-	<br/>
-		<div class="card text-dark bg-info mb-3">
-	  <div class="row g-0">
-	    <div class="col-md-4">
-	      {% if post.author.profile.profile_pic %} 
-	      	<img src="{{ post.author.profile.profile_pic.url}}" width="150" height="150"> 
-	      {% else %}
-	      	<img src="{% static 'blog/image/user-profile-default-image.png' %}" width="150" height="150"> 
-	      {% endif %}
-	    </div>
-	    <div class="col-md-8">
-	      <div class="card-body">
-	      	{% if post.author.profile%} 
-	      	<a href="{% url 'show_profile_page' post.author.profile.id %}" class="btn btn-secondary">View Profile Page</a>
-	      	{% endif %}
-	        <h5 class="card-title"><small> {{ post.author.first_name }} {{ post.author.last_name }}</small><br/></h5>
-	        {% if post.author.profile.Phone %} 
-	        	<p class="card-text"><small class="text-muted"> {{ post.author.profile.Phone }} </small></p>
-	        {% endif %}
-	        <h2><strong> {{ post.category }} - {{ post.title }} </strong><br/></h2>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<hr>
-	<br/>
+<div class="shadow-lg p-3 mb-5 bg-body rounded">
+	<br/><br/>
+	<h2><strong> {{ post.category }} - {{ post.title }} </strong><br/></h2>
 	
 	{{ post.body|safe }}
 
 	{% if post.attached_image %} <img src="{{ post.attached_image.url}}" width="600" height="600"> {% endif %}
 
-	<br/><hr>
+	<br/><br/>
 	<form action="{% url 'like_post' post.pk %}" method="POST">
 		{% csrf_token %}
 		{% if user.is_authenticated %}
@@ -60,13 +35,13 @@
 
 	</form>
 
-	<br/><hr>
+	<br/><br/>
 
 		{% if not post.comments.all %}
-			<h2> No Comments . . . </h2><a href="{% url 'add_comment' post.pk %}"> Add Comment </a>
+			<h2> No Comments . . . </h2><a href="{% url 'add_comment' post.pk %}" class="btn btn-secondary"> Add Comment </a>
 
 		{% else %}
-			<h2> Comments . . . </h2> <a href="{% url 'add_comment' post.pk %}"> Add Comment </a><br/>
+			<h2> Comments . . . </h2> <a href="{% url 'add_comment' post.pk %}" class="btn btn-secondary"> Add Comment </a><br/>
 			{% for comment in post.comments.all %}
 				<br/>
 				<strong>
@@ -95,8 +70,38 @@
 
 	{% endif %}
 
-	<hr>
 	<br/>
+	<br/>
+</div>
+{% endblock %}
 
+{% block profile %}
+
+<div class="card" style="width: 18rem;">
+  	{% if post.author.profile.profile_pic %} 
+	    <img src="{{ post.author.profile.profile_pic.url}}" width="150" height="150"> 
+	{% else %}
+	    <img src="{% static 'blog/image/user-profile-default-image.png' %}" width="150" height="150"> 
+	{% endif %}
+  <div class="card-body">
+    <h5 class="card-title"><small> {{ post.author.first_name }} {{ post.author.last_name }}</small></h5>
+    <p class="card-text">
+
+    	{% if post.author.profile.bio %} 
+	    	<p class="card-text"><small class="text-muted"> {{ post.author.profile.bio }} </small></p>
+		{% endif %}
+
+    </p>
+  </div>
+  <ul class="list-group list-group-flush">
+    {% if post.author.profile %} 
+	    <a href="{% url 'show_profile_page' post.author.profile.id %}" class="btn btn-secondary">View Profile Page</a>
+	{% endif %}
+	{% if post.author.profile.Phone %} 
+	    <ul><p class="card-text"><small class="text-muted">{{ post.author.profile.Phone }} </small></p></ul>
+	{% endif %}
+  </ul>
+  
+</div>
 
 {% endblock %}

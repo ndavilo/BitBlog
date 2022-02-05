@@ -4,6 +4,7 @@ from .models import Post, Category, Comment
 from .forms import PostForm, EditForm, AddCommentForm
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
+from coins.models import Chart
 
 class HomeView(ListView):
 	model 			= Post
@@ -13,6 +14,8 @@ class HomeView(ListView):
 	def get_context_data(self, *args, **kwargs):
 		cat_menu			= Category.objects.all()
 		context 			= super(HomeView, self).get_context_data(*args, **kwargs)
+		charts 				= Chart.objects.all()
+		context["charts"]	= charts
 		context["cat_menu"]	= cat_menu
 		return context
 
@@ -80,5 +83,6 @@ def LikeView(request, pk):
 		liked		= True
 
 	return HttpResponseRedirect(reverse('article_detail', args=[str(pk)]))
+
 
 
