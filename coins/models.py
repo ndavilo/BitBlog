@@ -13,46 +13,15 @@ class Chart(models.Model):
 	def get_absolute_url(self):
 		return reverse('home')
 
-class Bitcoin(models.Model):
-	name 		=	"Bitcoin"
-	value 		=	models.FloatField()
-	date_time	= 	models.DateTimeField(auto_now=True)
+class Cryptocoin(models.Model):
+	bitcoin_value		= models.FloatField()
+	tether_value		= models.FloatField()
+	etherem_value		= models.FloatField()
+	binance_value		= models.FloatField()
+	date_time			= models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		return self.name + ' | ' +str(self.value) + ' | ' +str(self.date_time)
-
-	def get_absolute_url(self):
-		return reverse('home')
-
-class Tether(models.Model):
-	name 		=	"Tether"
-	value 		=	models.FloatField()
-	date_time	= 	models.DateTimeField(auto_now=True)
-
-	def __str__(self):
-		return self.name + ' | ' +str(self.value) + ' | ' +str(self.date_time)
-
-	def get_absolute_url(self):
-		return reverse('home')
-
-class Ethereum(models.Model):
-	name 		=	"Ethereum"
-	value 		=	models.FloatField()
-	date_time	= 	models.DateTimeField(auto_now=True)
-
-	def __str__(self):
-		return self.name + ' | ' +str(self.value) + ' | ' +str(self.date_time)
-
-	def get_absolute_url(self):
-		return reverse('home')
-
-class Binance(models.Model):
-	name 		=	"Binance"
-	value 		=	models.FloatField()
-	date_time	= 	models.DateTimeField(auto_now=True)
-
-	def __str__(self):
-		return self.name + ' | ' +str(self.value) + ' | ' +str(self.date_time)
+		return ' Bitcoin: ' +str(self.bitcoin_value) + ' | ' +str(self.date_time)
 
 	def get_absolute_url(self):
 		return reverse('home')

@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Chart
+from .models import Cryptocoin
 
 # Create your views here.
 
 def ChartView(request):
-	charts 			= Chart.objects.all()
+	coins 			= Cryptocoin.objects.all()
 	context = {
-		"charts": charts
+		"coins": coins
 	}
 	return render(request, 'blog/chart_list.html', context)
