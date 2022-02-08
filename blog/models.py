@@ -22,7 +22,7 @@ class Post(models.Model):
 	category	= models.CharField(max_length=50, default='Sell')
 	likes		= models.ManyToManyField(User, related_name='blog_posts')
 	attached_image 	= models.ImageField(null=True, blank=True, upload_to='images/')
-
+  
 	def total_likes(self):
 		return self.likes.count()
 
@@ -34,12 +34,19 @@ class Post(models.Model):
 
 class Comment(models.Model):
 	post 		=	models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
-	name 		=	models.CharField(max_length=100)
-	body		=	models.TextField()
+	name 		=	models.ForeignKey(User, on_delete=models.CASCADE)
+	body		=	RichTextField(blank=True, null=True)
 	date_added 	=	models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering	=	['-date_added']
 
 	def __str__(self):
 		return self.post.title + ' | by:' +str(self.name)
+
+	def get_absolute_url(self):
+		return reverse('home', args=(str(self.id)))
+
 
 
 class Profile(models.Model):

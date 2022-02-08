@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Category, Comment
-from .forms import PostForm, EditForm, AddCommentForm
+from .forms import PostForm, EditForm, AddCommentForm, EditCommentForm
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from coins.models import Chart
+
 
 class HomeView(ListView):
 	model 			= Post
@@ -34,9 +35,11 @@ class ADetailView(DetailView):
 		if stuff.likes.filter(id=self.request.user.id).exists():
 			liked				= True
 
+
 		context["cat_menu"]		= cat_menu
-		context["total_likes"]	= total_likes
 		context["liked"]		= liked
+		context["total_likes"]	= total_likes
+
 		return context
 
 
@@ -67,6 +70,19 @@ class DeletePostView(DeleteView):
 	template_name	= 'delete_post.html'
 	success_url 	= reverse_lazy('home')
 
+
+class UpdateCommentView(UpdateView):
+    model 			= Comment
+    template_name	= 'update_comment.html'
+    form_class		= EditCommentForm
+    success_url 	= reverse_lazy('home')
+
+class DeleteCommentView(DeleteView):
+    model 			= Comment
+    template_name	= 'delete_comment.html'
+    success_url 	= reverse_lazy('home')
+
+
 def CategoryView(request, cats):
 	category_posts	= Post.objects.filter(category=cats.replace('-', ' '))
 	return render(request, 'categories.html', {'cats': cats.title().replace('-', ' '), 'category_posts': category_posts})
@@ -83,6 +99,7 @@ def LikeView(request, pk):
 		liked		= True
 
 	return HttpResponseRedirect(reverse('article_detail', args=[str(pk)]))
+
 
 
 
