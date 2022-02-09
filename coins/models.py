@@ -15,8 +15,8 @@ class Chart(models.Model):
 
 class Cryptocoin(models.Model):
 	bitcoin_value		= models.FloatField()
-	tether_value		= models.FloatField()
 	etherem_value		= models.FloatField()
+	tether_value		= models.FloatField()
 	binance_value		= models.FloatField()
 	date_time			= models.DateTimeField(auto_now=True)
 

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+  <a href="{% url 'message' %}" class="btn btn-dark">Refresh</a>
+  <a href="{% url 'send_message' %}" class="btn btn-dark">Send Message</a>
+</center>
+{% for message in messages%} 
+
+  <br/>
+  {% if user.id == message.recipient.id %}
+
+    <div class="shadow-lg p-3 mb-5 bg-body rounded">
+      <center>
+      {% if message.sender.profile %}
+        <a href="{% url 'show_profile_page' message.sender.profile.id %}" class="btn btn-light">
+      {% endif %}
+      From: {{ message.sender }} </a>- by: {{ message.sender.first_name }}, {{ message.sender.last_name }}  - {{ message.sent }} 
+      </br>
+      </br>{{ message.body }}   <small><a href="{% url 'deleteM' message.pk %}" class="btn btn-secondary"> Delete </a></small>
+      </center>
+    </div>
+
+  {% endif %}
+  <br/>
+  {% if user.id == message.sender.id %}
+
+    <div class="shadow-lg p-3 mb-5 bg-body rounded">
+      <center>
+      {% if message.recipient.profile %} 
+        <a href="{% url 'show_profile_page' message.recipient.profile.id %}" class="btn btn-light">
+      {% endif %}
+      To: {{ message.recipient }} </a>- by: {{ message.recipient.first_name }}, {{ message.recipient.last_name }}  - {{ message.sent }} 
+      </br>
+      </br>{{ message.body }}  <a href="{% url 'deleteM' message.pk %}" class="btn btn-secondary"> Delete </a><a href="{% url 'send_message' %}" class="btn btn-secondary"> Reply </a>
+      </center>
+    </div>
+
+  {% endif %}
+
+
+{% endfor %}
+
+
+{% endblock %}

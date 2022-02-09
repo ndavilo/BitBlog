@@ -25,5 +25,7 @@ urlpatterns = [
     path('members/', include('members.urls')),
     path('coins/', include('django.contrib.auth.urls')),
     path('coins/', include('coins.urls')),
+    path('message/', include('django.contrib.auth.urls')),
+    path('message/', include('message.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

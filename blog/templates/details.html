@@ -110,6 +110,7 @@
 	{% if post.author.profile.Phone %} 
 	    <p class="card-text"><small class="text-muted">{{ post.author.profile.Phone }} </small></p>
 	{% endif %}
+	<a href="{% url 'send_message' %}" class="btn btn-light">Send Message</a>
   </ul> 
 </div>
 </center>
