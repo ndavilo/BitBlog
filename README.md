@@ -29,7 +29,7 @@ Steps:
         20)	open github
         a)	create new repository
         b)	copy name of repository
-        21)	git remote add origin paste 19b
+        21)	git remote add origin https://github.com/ndavilo/testing.git
         22)	git push origin master (if you have push to master before it might not work | then git push origin main) 
         23)	open setting.py
         a)	add the following on top:
