@@ -38,10 +38,31 @@ Steps:
         iii)	import dj_database_url
         iv)	from decouple import Config
         b)	add to MIDLEWARE:
+                pip install whitenoise
         i)	‘whitenoise.middleware.WhiteNoiseMiddleware
         24)	touch Procfile 
         a)	open Procfile
         b)	web: gunicorn nameofyourapp.wsgi
+        heroku config:set SECRET_KEY=yoursecretkey
+        heroku config:set DEBUG=False
+        import dj_database_url
+        add:
+        db_from_env = dj_database_url.config(conn_max_age=600)
+        DATABASES['default'].update(db_from_env)
+        pip install heroku
+        pip install gunicorn
+        pip freeze > requirements.txt
+        heroku create
+        heroku apps:rename --app oldname newname
+        heroku login
+        go to your settings and add: ALLOWED_HOSTS = ['visualpython.herokuapp.com',]
+        git init
+        git add
+        git commit -m “First Heroku”
+        heroku git:remote -a newname
+        heroku config:set DISABLE_COLLECTSTATIC=1
+        git push heroku master or main
+        
 
 How to change database from SQLite to Progress in Django:
   Command needed to backup database:
